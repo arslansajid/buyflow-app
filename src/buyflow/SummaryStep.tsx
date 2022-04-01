@@ -1,35 +1,33 @@
 import { Link } from 'react-router-dom'
 import React from 'react'
+import useAppContext from '../hooks/UseAppContext';
 
 interface SummaryStepProps {
   productId: string,
-  collectedData: {
-    firstName?: string
-    lastName?: string
-    email: string
-    age: number
-  },
   isDesignerBuyflow: boolean,
 }
 
 const SummaryStep: React.FC<SummaryStepProps> = (props) => {
-  const { collectedData, isDesignerBuyflow, productId } = props;
+  const { isDesignerBuyflow, productId } = props;
+  const { data, resetData } = useAppContext();
   
   return (
     <>
       {
         isDesignerBuyflow && (
           <>
-            <div>First Name: {collectedData?.firstName}</div>
-            <div>Last Name: {collectedData?.lastName}</div>
+            <div>First Name: {data?.firstName}</div>
+            <div>Last Name: {data?.lastName}</div>
           </>
         )
       }
-      <div>Email: {collectedData?.email}</div>
-      <div>Age: {collectedData?.age}</div>
+      <div>Email: {data?.email}</div>
+      <div>Age: {data?.age}</div>
       <br />
       <div>
-        <Link to={`/purchased=${productId}`}>Purchase</Link>
+        <Link to={`/purchased=${productId}`}>
+          <button onClick={() => resetData()}>Purchase</button>
+        </Link>
       </div>
     </>
   )

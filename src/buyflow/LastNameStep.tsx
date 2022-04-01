@@ -1,24 +1,30 @@
-import React, { useState } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 
 import SubmitButton from './SubmitButton';
+import useAppContext from '../hooks/UseAppContext';
 
 interface LastNameStepProps {
-  cb: (field: string, value: string) => void
+  moveToNextStep: () => void
 }
 
 const LastNameStep: React.FC<LastNameStepProps> = (props) => {
   const [lastName, setLastName] = useState('');
+  const { updateData } = useAppContext();
+
+  const onFormSubmit = (e: SyntheticEvent) => {
+    e.preventDefault();
+    updateData('lastName', lastName);
+    props.moveToNextStep();
+  }
   
   return (
     <form
       id='lastName-form'
-      onSubmit={(e) => {
-        e.preventDefault();
-        props.cb('lastName', lastName)
-      }}>
+      onSubmit={onFormSubmit}>
       <div>
         Last Name:{' '}
         <input
+          autoFocus
           required
           type='text'
           onChange={({ target: { value } }) => {

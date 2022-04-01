@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 
 import SubmitButton from './SubmitButton';
+import useAppContext from '../hooks/UseAppContext';
 
 interface EmailStepProps {
-  cb: (field: string, value: string) => void
+  moveToNextStep: () => void
 }
 
 const EmailStep: React.FC<EmailStepProps> = (props) => {
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('');
+  const { updateData } = useAppContext();
+
+  const onFormSubmit = (e: SyntheticEvent) => {
+    e.preventDefault();
+    updateData('email', email);
+    props.moveToNextStep();
+  }
+  
   return (
     <form
       id='email-form'
-      onSubmit={(e) => {
-        e.preventDefault();
-        props.cb('email', email)
-      }}>
+      onSubmit={onFormSubmit}>
       <div>
         Email:{' '}
         <input
+          autoFocus
           required
           type="email"
           onChange={({ target: { value } }) => {

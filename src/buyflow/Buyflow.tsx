@@ -2,6 +2,7 @@ import { BuyflowSteps, ProductIds } from './Buyflow.types';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import AgeStep from './AgeStep';
+import { AppContextProvider } from "../context/AppContext";
 import EmailStep from './EmailStep';
 import FirstNameStep from './FirstNameStep';
 import LastNameStep from './LastNameStep';
@@ -19,46 +20,38 @@ const PRODUCT_IDS_TO_NAMES = {
 const Buyflow: React.FC<BuyflowProps> = (props) => {
   const { productId } = props;
   const isDesignerBuyflow = useMemo(() => productId === ProductIds.desIns, [productId]);
-  
+
   const [currentStep, setStep] = useState(BuyflowSteps.email);
-  const [collectedData, updateData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    age: 0,
-  });
 
   useEffect(() => {
-    if(isDesignerBuyflow) {
+    if (isDesignerBuyflow) {
       setStep(BuyflowSteps.firstName)
     }
   }, [isDesignerBuyflow])
-  
-  const getStepCallback = (nextStep: BuyflowSteps) => (field: string, value: string | number) => {
-    updateData(prevState => ({
-      ...prevState,
-      [field]: value
-    }));
-    setStep(nextStep);
-  };
 
   return (
-    <>
+    <AppContextProvider>
       <h4>Buying {PRODUCT_IDS_TO_NAMES[productId]}</h4>
-      {(currentStep === 'firstName' && <FirstNameStep cb={getStepCallback(BuyflowSteps.lastName)} />) ||
-      (currentStep === 'lastName' && <LastNameStep cb={getStepCallback(BuyflowSteps.email)} />) ||
-      (currentStep === 'email' && <EmailStep cb={getStepCallback(BuyflowSteps.age)} />) ||
-        (currentStep === 'age' && (
-          <AgeStep cb={getStepCallback(BuyflowSteps.summary)} />
-        )) ||
-        (currentStep === 'summary' && (
-          <SummaryStep
-            productId={productId}
-            isDesignerBuyflow={isDesignerBuyflow}
-            collectedData={collectedData}
-          />
-        ))}
-    </>
+
+      {currentStep === BuyflowSteps.firstName && (
+        <FirstNameStep moveToNextStep={() => setStep(BuyflowSteps.lastName)} />
+      )}
+      {currentStep === BuyflowSteps.lastName && (
+        <LastNameStep moveToNextStep={() => setStep(BuyflowSteps.email)} />
+      )}
+      {currentStep === BuyflowSteps.email && (
+        <EmailStep moveToNextStep={() => setStep(BuyflowSteps.age)} />
+      )}
+      {currentStep === BuyflowSteps.age && (
+        <AgeStep moveToNextStep={() => setStep(BuyflowSteps.summary)} />
+      )}
+      {(currentStep === BuyflowSteps.summary && (
+        <SummaryStep
+          productId={productId}
+          isDesignerBuyflow={isDesignerBuyflow}
+        />
+      ))}
+    </AppContextProvider>
   )
 }
 
