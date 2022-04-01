@@ -2,34 +2,35 @@ import React, { useState } from 'react';
 
 import SubmitButton from './SubmitButton';
 
-interface EmailStepProps {
+interface LastNameStepProps {
   cb: (field: string, value: string) => void
 }
 
-const EmailStep: React.FC<EmailStepProps> = (props) => {
-  const [email, setEmail] = useState('')
+const LastNameStep: React.FC<LastNameStepProps> = (props) => {
+  const [lastName, setLastName] = useState('');
+  
   return (
     <form
-      id='email-form'
+      id='lastName-form'
       onSubmit={(e) => {
         e.preventDefault();
-        props.cb('email', email)
+        props.cb('lastName', lastName)
       }}>
       <div>
-        Email:{' '}
+        Last Name:{' '}
         <input
           required
-          type="email"
+          type='text'
           onChange={({ target: { value } }) => {
-            setEmail(value)
+            setLastName(value)
           }}
-          value={email}
+          value={lastName}
         ></input>
       </div>
       <br />
-      <SubmitButton id='email-form' />
+      <SubmitButton id='firstName-form' />
     </form>
   )
 }
 
-export default EmailStep
+export default LastNameStep;
