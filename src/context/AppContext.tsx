@@ -14,10 +14,6 @@ export interface AppContextInterface {
   updateData: UpdateContextType,
   resetData: () => void,
 }
-export type AppContextValues = undefined | AppContextInterface;
-
-const Context = createContext<AppContextValues>(undefined);
-
 interface ContextProps {
   children: (ReactElement | null | false)[];
 }
@@ -28,6 +24,12 @@ const initialState = {
   email: '',
   age: 0,
 }
+
+const Context = createContext<AppContextInterface>({
+  data: initialState,
+  updateData: () => {},
+  resetData: () => {},
+});
 
 export const AppContextProvider: React.FC<ContextProps> = (props) => {
   const [data, setData] = useState<InitalStateInterface>(initialState);
