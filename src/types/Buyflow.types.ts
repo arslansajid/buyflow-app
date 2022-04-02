@@ -1,6 +1,5 @@
 export enum BuyflowSteps {
-    firstName = "firstName",
-    lastName = "lastName",
+    name = "name",
     email = "email",
     age = "age",
     summary = "summary",

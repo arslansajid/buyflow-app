@@ -1,13 +1,14 @@
 import './App.css'
 
-import { Link, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
-import Buyflow from './buyflow/Buyflow';
-import { ProductIds } from './buyflow/Buyflow.types';
+import Buyflow from './containers/Buyflow';
+import Home from './containers/Home';
+import { ProductIds } from './types/Buyflow.types';
 import React from 'react';
-import logo from './logo.svg'
+import logo from './logo.svg';
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <Router>
       <div className="App">
@@ -22,10 +23,7 @@ const App = () => {
             <Buyflow productId={ProductIds.desIns} />
           </Route>
           <Route path="/">
-            <p>Welcome to Getsafe's Insurance Buyflow</p>
-            <Link to="/buy/insurance_dev">Buy Developer Insurance</Link>
-            <br />
-            <Link to="/buy/insurance_designer">Buy Designer Insurance</Link>
+            <Home />
           </Route>
         </Switch>
       </div>

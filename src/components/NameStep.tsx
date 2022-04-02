@@ -9,11 +9,14 @@ interface FirstNameStepProps {
 
 const FirstNameStep: React.FC<FirstNameStepProps> = (props) => {
   const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+
   const { updateData } = useAppContext();
 
   const onFormSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     updateData('firstName', firstName);
+    updateData('lastName', lastName);
     props.moveToNextStep();
   }
 
@@ -32,6 +35,18 @@ const FirstNameStep: React.FC<FirstNameStepProps> = (props) => {
           }}
           value={firstName}
         />
+      </div>
+      <br />
+      <div>
+        Last Name:{' '}
+        <input
+          required
+          type='text'
+          onChange={({ target: { value } }) => {
+            setLastName(value)
+          }}
+          value={lastName}
+        ></input>
       </div>
       <br />
       <SubmitButton id='firstName-form' />
