@@ -1,10 +1,14 @@
-import React from 'react'
-import logo from './logo.svg'
 import './App.css'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import Buyflow, { ProductIds } from './buyflow/Buyflow'
 
-const App = () => {
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+
+import Buyflow from './containers/Buyflow';
+import Home from './containers/Home';
+import { ProductIds } from './types/Buyflow.types';
+import React from 'react';
+import logo from './logo.svg';
+
+const App: React.FC = () => {
   return (
     <Router>
       <div className="App">
@@ -15,9 +19,11 @@ const App = () => {
           <Route path="/buy/insurance_dev">
             <Buyflow productId={ProductIds.devIns} />
           </Route>
+          <Route path="/buy/insurance_designer">
+            <Buyflow productId={ProductIds.desIns} />
+          </Route>
           <Route path="/">
-            <p>Welcome to Getsafe's Developer Insurance</p>
-            <Link to="/buy/insurance_dev">Get started!</Link>
+            <Home />
           </Route>
         </Switch>
       </div>
